@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<main class="app-card">
+    <header class="app-header">
+        <h1>TaskFlow</h1>
+        <p class="subtitle">by Jahanzaib Muhammad</p>
+    </header>
+
+    <form id="newTaskForm" class="new-task-row">
+        <input type="text" id="titleField" placeholder="Add a new task…" autocomplete="off" required>
+        <button type="submit" class="btn btn-add">+ Add</button>
+    </form>
+
+    <nav class="filter-tabs">
+        <button class="tab active" data-filter="all">All</button>
+        <button class="tab" data-filter="active">Active</button>
+        <button class="tab" data-filter="done">Completed</button>
+    </nav>
+
+    <ul id="taskList" class="task-list"></ul>
+
+    <p id="emptyState" class="empty-state" hidden>Nothing here yet — add your first task above.</p>
+</main>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
