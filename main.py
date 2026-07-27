@@ -35,6 +35,12 @@ def serve_homepage():
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 
+@app.get("/health")
+def health_check():
+    """Simple deployment health check."""
+    return {"status": "ok"}
+
+
 @app.get("/api/todos", response_model=list[schemas.TodoOut])
 def list_todos(db: Session = Depends(models.get_session)):
     """Return every to-do item, most recently created first."""
@@ -44,7 +50,11 @@ def list_todos(db: Session = Depends(models.get_session)):
 @app.post("/api/todos", response_model=schemas.TodoOut, status_code=status.HTTP_201_CREATED)
 def create_todo(payload: schemas.TodoCreatePayload, db: Session = Depends(models.get_session)):
     """Create a new to-do item."""
-    item = models.TodoItem(title=payload.title.strip(), notes=payload.notes or "")
+    title = payload.title.strip()
+    if not title:
+        raise HTTPException(status_code=422, detail="Title cannot be blank")
+
+    item = models.TodoItem(title=title, notes=(payload.notes or "").strip())
     db.add(item)
     db.commit()
     db.refresh(item)
@@ -59,6 +69,12 @@ def update_todo(item_id: int, payload: schemas.TodoUpdatePayload, db: Session = 
         raise HTTPException(status_code=404, detail="That task doesn't exist")
 
     changes = payload.model_dump(exclude_unset=True)
+    if "title" in changes:
+        changes["title"] = changes["title"].strip()
+        if not changes["title"]:
+            raise HTTPException(status_code=422, detail="Title cannot be blank")
+    if "notes" in changes and changes["notes"] is not None:
+        changes["notes"] = changes["notes"].strip()
     for field, value in changes.items():
         setattr(item, field, value)
 
