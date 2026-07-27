@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d9488">
+  <title>TaskFlow — Task Manager</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="app-card">
+    <header class="app-header">
+      <p class="eyebrow">PERSONAL TASK MANAGER</p>
+      <h1>TaskFlow</h1>
+      <p class="subtitle">Organize what matters, one task at a time.</p>
+    </header>
+    <form id="newTaskForm" class="new-task-row">
+      <label class="sr-only" for="titleField">New task</label>
+      <input type="text" id="titleField" placeholder="What needs to be done?" maxlength="200" autocomplete="off" required>
+      <button type="submit" class="btn btn-add">Add task</button>
+    </form>
+    <p id="formError" class="form-error" role="alert" hidden></p>
+    <section aria-label="Task list">
+      <div class="list-heading"><nav class="filter-tabs" aria-label="Filter tasks"><button type="button" class="tab active" data-filter="all">All</button><button type="button" class="tab" data-filter="active">Active</button><button type="button" class="tab" data-filter="done">Completed</button></nav><span id="taskCount" class="task-count"></span></div>
+      <ul id="taskList" class="task-list" aria-live="polite"></ul>
+      <p id="emptyState" class="empty-state" hidden>No tasks here yet. Add your first one above.</p>
+    </section>
+  </main>
+  <script src="/static/script.js" defer></script>
+</body>
+</html>

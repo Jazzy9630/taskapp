@@ -9,15 +9,18 @@ from datetime import datetime, timezone
 
 # Vercel's serverless functions only allow writes to /tmp — everywhere else
 # is read-only at runtime. Locally (or on Railway) we just use a regular file.
-if os.environ.get("VERCEL"):
-    DATABASE_URL = "sqlite:////tmp/taskflow.db"
-else:
-    DATABASE_URL = "sqlite:///./taskflow.db"
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    if os.environ.get("VERCEL"):
+        DATABASE_URL = "sqlite:////tmp/taskflow.db"
+    else:
+        DATABASE_URL = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'taskflow.db')}"
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}  # needed only for SQLite
-)
+engine_options = {}
+if DATABASE_URL.startswith("sqlite"):
+    engine_options["connect_args"] = {"check_same_thread": False}
+
+engine = create_engine(DATABASE_URL, **engine_options)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

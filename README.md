@@ -1,7 +1,7 @@
 # TaskFlow
 
-A simple full-stack to-do list app: add, complete, and delete tasks, with everything
-saved to a SQLite database.
+A complete full-stack task manager: create tasks, mark them complete, filter them,
+and delete them. FastAPI stores tasks in SQLite locally.
 
 **Author:** Jahanzaib Muhammad
 **Contact:** Jahanzebsiyal4@gmail.com
@@ -54,10 +54,13 @@ uvicorn main:app --reload
 
 Then open `http://127.0.0.1:8000` in your browser.
 
+The documented API is available at `http://127.0.0.1:8000/docs`, and a simple
+deployment health check is available at `/health`.
+
 ## Deploying on Vercel
 
-1. Push this project to a GitHub repository (make sure `api/index.py` and
-`vercel.json` are included).
+1. Push this project to a GitHub repository (including `api/index.py`, the
+   `static/` directory, and `vercel.json`).
 2. Go to [vercel.com](https://vercel.com) and sign in with GitHub.
 3. Click **Add New -> Project**, then import your `taskflow` repo.
 4. Vercel reads `vercel.json` automatically - no manual build/output
@@ -81,4 +84,3 @@ to actually persist long-term in production, the fix is to swap SQLite for a
 hosted database - Vercel Postgres or Neon (both have free tiers) work with
 almost no code change since SQLAlchemy just needs a different `DATABASE\_URL`.
 Let me know if you want that set up.
-
